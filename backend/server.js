@@ -1,0 +1,85 @@
+const express = require("express")
+const app = express()
+
+app.use(express.urlencoded({ extended: true }))
+let tasks = ['Tasks List']
+app.get('/', (req, res) => {
+    let tasklist = tasks.map(t => `<li>${t}</li>`).join('\n')
+    res.send(`<html>
+        <body>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                background-color: #f0f2f5;
+                padding: 30px;
+                max-width: 600px;
+                margin: auto;
+            }
+            h1 {
+                text-align: center;
+                color: #333;
+                margin-bottom: 30px;
+                font-size: 2.5em;
+            }
+            form {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 25px;
+                justify-content: center;
+            }
+            input[type="text"] {
+                flex: 1;
+                padding: 12px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+                box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            }
+            button {
+                padding: 12px 20px;
+                background-color:rgb(40, 177, 93);
+                border: none;
+                color: white;
+                font-size: 16px;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+            ul {
+                list-style-type: none;
+                padding: 0;
+            }
+            li {
+                background: white;
+                padding: 12px;
+                margin-bottom: 8px;
+                border-radius: 6px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                font-size: 18px;
+            }
+        </style>
+
+        <form action="/" method="post">
+        <h1>To do list </h1>
+        <input name="newtask"> 
+        <button type="submit">Button</button>
+        </form>
+        <ul>
+        ${tasklist}
+        
+        </ul>
+        </body>
+        </html>`)
+})
+
+app.post('/', (req, res) => {
+    tasks.push(req.body.newtask)
+    res.redirect('/')
+})
+
+app.listen(4444, (req, res) => {
+    console.log("started")
+})
